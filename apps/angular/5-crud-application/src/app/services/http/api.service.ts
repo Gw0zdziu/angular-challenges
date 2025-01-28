@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { randText } from '@ngneat/falso';
 import { Observable } from 'rxjs';
-import { Todo } from '../../models/todo-get.model';
+import { Todo } from '../../models/todo.model';
 
 @Injectable({
   providedIn: 'root',

@@ -1,24 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
-import { Todo } from './models/todo-get.model';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Todo } from './models/todo.model';
 import { ApiService } from './services/http/api.service';
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinner],
   selector: 'app-root',
   template: `
-    <div *ngFor="let todo of todos()">
-      {{ todo.title }}
-      <button (click)="update(todo)">Update</button>
-      <button (click)="delete(todo.id)">Delete</button>
-    </div>
+    @if (todos().length === 0) {
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    } @else {
+      <div *ngFor="let todo of todos()">
+        {{ todo.title }}
+        <button (click)="update(todo)">Update</button>
+        <button (click)="delete(todo.id)">Delete</button>
+      </div>
+    }
   `,
   styles: [],
 })
 export class AppComponent implements OnInit {
   todos: WritableSignal<Todo[]> = signal([]);
-
-  constructor(private apiService: ApiService) {}
+  private apiService = inject(ApiService);
 
   ngOnInit(): void {
     this.apiService.getTodos().subscribe((todos) => {
@@ -30,6 +40,7 @@ export class AppComponent implements OnInit {
     this.apiService.updateTodo(todo).subscribe((todoUpdated: Todo) => {
       this.todos.update((x) => {
         return x.map((x) => {
+          return x.id !== todo.id ? x : todoUpdated;
           if (x.id !== todo.id) {
             return x;
           } else {
