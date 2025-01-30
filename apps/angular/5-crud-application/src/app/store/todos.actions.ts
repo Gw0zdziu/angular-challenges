@@ -12,6 +12,16 @@ export const updateTodo = createAction(
 );
 
 export const updateTodoSuccess = createAction(
-  '[Todos] UpdateTodo',
+  '[Todos] UpdateTodoSuccess',
   props<{ todo: Todo }>(),
+);
+
+export const deleteTodo = createAction(
+  '[Todo] DeleteTodo',
+  props<{ id: number }>(),
+);
+
+export const deleteTodoSuccess = createAction(
+  '[Todo] DeleteTodoSuccess',
+  props<{ id: number }>(),
 );

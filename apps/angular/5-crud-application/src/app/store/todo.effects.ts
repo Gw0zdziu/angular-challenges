@@ -3,6 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap } from 'rxjs';
 import { ApiService } from '../services/http/api.service';
 import {
+  deleteTodo,
+  deleteTodoSuccess,
   getTodos,
   getTodosSuccess,
   updateTodo,
@@ -34,6 +36,15 @@ export class TodoEffects {
         this.apiService
           .updateTodo(x.todo)
           .pipe(map((todo) => updateTodoSuccess({ todo }))),
+      ),
+    ),
+  );
+
+  deleteTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteTodo),
+      switchMap((x) =>
+        this.apiService.deleteTodo(x.id).pipe(map(() => deleteTodoSuccess(x))),
       ),
     ),
   );

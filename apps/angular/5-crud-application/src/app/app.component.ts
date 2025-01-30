@@ -10,7 +10,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Store } from '@ngrx/store';
 import { Todo } from './models/todo.model';
 import { ApiService } from './services/http/api.service';
-import { getTodos, updateTodo } from './store/todos.actions';
+import { deleteTodo, getTodos, updateTodo } from './store/todos.actions';
 import { selectTodos } from './store/todos.selectors';
 
 @Component({
@@ -41,20 +41,9 @@ export class AppComponent implements OnInit {
 
   update(todo: Todo) {
     this.store.dispatch(updateTodo({ todo }));
-    /*this.apiService.updateTodo(todo).subscribe((todoUpdated: Todo) => {
-      this.todos.update((x) => {
-        return x.map((x) => {
-          return x.id !== todo.id ? x : todoUpdated;
-        });
-      });
-    });*/
   }
 
   delete(id: number) {
-    this.apiService.deleteTodo(id).subscribe(() => {
-      this.todos.update((x) => {
-        return x.filter((x) => x.id !== id);
-      });
-    });
+    this.store.dispatch(deleteTodo({ id }));
   }
 }
