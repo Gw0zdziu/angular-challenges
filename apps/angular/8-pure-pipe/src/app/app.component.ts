@@ -1,20 +1,16 @@
 import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
+import { TransformPipe } from './transform.pipe';
 
 @Component({
-  imports: [NgFor],
+  imports: [NgFor, TransformPipe],
   selector: 'app-root',
   template: `
     <div *ngFor="let person of persons; let index = index">
-      {{ heavyComputation(person, index) }}
+      {{ person | transformText: index }}
     </div>
   `,
 })
 export class AppComponent {
-  persons = ['toto', 'jack'];
-
-  heavyComputation(name: string, index: number) {
-    // very heavy computation
-    return `${name} - ${index}`;
-  }
+  persons: string[] = ['toto', 'jack'];
 }
