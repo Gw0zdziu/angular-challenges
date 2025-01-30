@@ -15,7 +15,7 @@ export class ApiService {
   }
 
   updateTodo(todo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(
+    return this.http.patch<Todo>(
       `https://jsonplaceholder.typicode.com/todos/${todo.id}`,
       JSON.stringify({
         todo: todo.id,
