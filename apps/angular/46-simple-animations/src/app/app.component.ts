@@ -1,3 +1,11 @@
+import {
+  animate,
+  query,
+  stagger,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { Component } from '@angular/core';
 
 @Component({
@@ -16,9 +24,45 @@ import { Component } from '@angular/core';
       }
     }
   `,
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateX(-60px)',
+        }),
+        animate(
+          '500ms 350ms ease-in-out',
+          style({
+            opacity: 1,
+            transform: 'translateX(0px)',
+          }),
+        ),
+      ]),
+    ]),
+    trigger('staggerItems', [
+      transition(':enter', [
+        query('.list-item', [
+          style({
+            opacity: 0,
+            transform: 'translateX(-60px)',
+          }),
+          stagger(150, [
+            animate(
+              '500ms ease-in-out',
+              style({
+                opacity: 1,
+                transform: 'translateX(0px)',
+              }),
+            ),
+          ]),
+        ]),
+      ]),
+    ]),
+  ],
   template: `
     <div class="mx-20 my-40 flex gap-5">
-      <section>
+      <section @fade>
         <div>
           <h3>2008</h3>
           <p>
@@ -50,7 +94,7 @@ import { Component } from '@angular/core';
         </div>
       </section>
 
-      <section>
+      <section [@staggerItems]>
         <div class="list-item">
           <span>Name:</span>
           <span>Samuel</span>
@@ -84,4 +128,9 @@ import { Component } from '@angular/core';
     </div>
   `,
 })
-export class AppComponent {}
+export class AppComponent {
+  isOpen = true;
+  toggle() {
+    this.isOpen = !this.isOpen;
+  }
+}
