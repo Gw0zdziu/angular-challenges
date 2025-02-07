@@ -6,9 +6,6 @@ import { Person } from './person.model';
 })
 export class WrapFnPipe<T extends Person, C, I> implements PipeTransform {
   transform(value: T, index: C, isFirst: I): any {
-    console.log(value.name);
-    console.log(index);
-    console.log(isFirst);
     let isAllowed = '';
     if (isFirst) {
       isAllowed = 'always allowed';
