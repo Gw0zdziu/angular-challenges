@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,7 +13,7 @@ import { RatingControlComponent } from '../rating-control/rating-control.compone
   templateUrl: 'feedback-form.component.html',
   styleUrls: ['feedback-form.component.scss'],
 })
-export class FeedbackFormComponent {
+export class FeedbackFormComponent implements OnInit {
   @Output()
   readonly feedBackSubmit: EventEmitter<Record<string, string | null>> =
     new EventEmitter<Record<string, string | null>>();
@@ -26,9 +26,16 @@ export class FeedbackFormComponent {
       validators: Validators.required,
     }),
     comment: new FormControl(),
+    rating: new FormControl(null, [Validators.required]),
   });
 
   rating: string | null = null;
+
+  ngOnInit() {
+    this.feedbackForm.valueChanges.subscribe((x) => {
+      console.log(x);
+    });
+  }
 
   submitForm(): void {
     this.feedBackSubmit.emit({
